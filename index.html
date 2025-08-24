@@ -733,6 +733,23 @@ document.getElementById("musicToggle").addEventListener("click", function(e) {
         </div>
     </div>
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".game-card[data-game-url]").forEach(card => {
+    card.addEventListener("mouseenter", () => {
+      const url = card.getAttribute("data-game-url");
+      if (!url || card.dataset.preloaded) return;
+
+      const iframe = document.createElement("iframe");
+      iframe.src = url;
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+
+      card.dataset.preloaded = "true";
+    });
+  });
+});
+    </script>
+    <script>
 document.querySelector('.search-input').addEventListener('input', function(e) {
     const query = e.target.value.toLowerCase();
     document.querySelectorAll('.game-card').forEach(card => {
