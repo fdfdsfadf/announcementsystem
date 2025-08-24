@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8167917296547686"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZDD8GECEW2" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8167917296547686"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZDD8GECEW2');
+  </script>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="description" content="Cat-Nitro for SBC by SBC">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:description" content="macbooksuck">
+    <meta property="og:type" content="website">
+    <meta name="google-adsense-account" content="ca-pub-8167917296547686">
+    <title>mySBC</title>
+    <link rel="icon" href="assets/favicon/mysbc.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+.icon-bar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px 0;
+  background-color: transparent;
+  position: static; /* Remove fixed positioning */
+  width: 100%;
+}
+
+.icon-bar a {
+  color: white;
+  font-size: 24px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.icon-bar a:hover {
+  color: #ffcc00;
+}
+
+.icon-bar i,
+.icon-bar img.nav-icon {
+  max-width: 24px;
+  max-height: 24px;
+}
+
+.icon-bar a.active i {
+  color: #1eff00;
+  text-shadow: 0 0 5px #1eff00, 0 0 10px #1eff00;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.vertical-icons {
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-top: 4px;
+}
+        
+
+#idleCountdown {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(25, 25, 25, 0.9);
+  color: #1eff00;
+  font-size: 20px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-family: 'Courier New', monospace;
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 0 10px #1eff00, 0 0 20px #1eff00;
+  text-shadow: 0 0 5px #1eff00;
+  animation: pulseGlow 1s infinite alternate;
+}
+
+        
+#webAppPopup {
+  position: fixed !important;
+  bottom: 32px !important;
+  right: 32px !important;
+  left: auto !important;
+  top: auto !important;
+  margin: 0 !important;
+  z-index: 10000 !important;
+  width: 340px;
+  max-width: 90vw;
+  min-width: 180px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  background: #09003d;
+  color: #fff;
+  border-radius: 12px;
+  display: none; /* default off */
+}
+        
+#webAppPopup .callout-header {
+    font-weight: bold;
+    font-size: 16px;
+}
+  
+    </style>
+</head>
+<body>
+        <div class="icon-bar">
+<a href="https://discord.com/invite/bUhB26NxNC" target="_blank" title="Join our Discord">
+  <i class="fab fa-discord"></i>
+</a>
+
+  <a href="#" id="musicToggle" title="Play music">
+    <i class="fas fa-music"></i>
+    </a>
+</div>
+
+<div id="musicPlayer" style="display:none; position:fixed;
+top:60px; right:20px; background:#000; border:2px solid violet;
+padding:10px; border-radius:15px; z-index:9999;">
+  <audio id="bgAudio" controls>
+    <source src="assets/music/music.mp3" type="audio/mpeg">
+    Your browser doesn't support audio.
+  </audio>
+</div>
+<div id="idleOverlay" style="display:none; position:fixed; top:0;
+left:0; width:100vw; height:100vh; background:#000; z-index:99999;">
+  <img src="assets/img/Drawing-29.sketchpad.png" alt="Idle Cover" style="width:100%; height:100%; object-fit:cover;">
+  
+<button id="resumeBtn" onclick="hideIdleOverlay()" style="
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 6px 12px;
+  font-size: 14px;
+  background: #888;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+">
+  Resume
+</button>
+</div>
+
+<div id="idleCountdown" style="
+  position:fixed;
+  top:50px;
+  left:50%;
+  transform:translateX(-50%);
+  background-color:rgba(0,0,0,0.5);
+  color:#1eff00;
+  font-size:18px;
+  padding:6px 12px;
+  border-radius:10px;
+  z-index:9999;
+  font-family:monospace;
+  pointer-events:none;
+">
+  Idle timer: 20:00
+</div>
+
+<script>
+let lastActive = Date.now();
+const idleDuration = 20 * 60 * 1000; // 20 minutes
+const countdownEl = document.getElementById("idleCountdown");
+let idleActive = false;
+
+function showIdleOverlay() {
+  document.getElementById("idleOverlay").style.display = "block";
+  idleActive = true;
+}
+
+function hideIdleOverlay() {
+  document.getElementById("idleOverlay").style.display = "none";
+  idleActive = false;
+  lastActive = Date.now(); // Reset timer
+}
+
+["mousemove", "click", "scroll", "touchstart"].forEach(evtName => {
+  document.addEventListener(evtName, (e) => {
+    if (!idleActive) {
+      lastActive = Date.now();
+    } else {
+      // Prevent mouse movement from resetting timer during idle
+      if (evtName === "mousemove") {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    }
+  }, true);
+});
+
+// Resume only via key press or resume button
+document.addEventListener("keydown", () => {
+  if (idleActive) hideIdleOverlay();
+});
+
+document.getElementById("resumeBtn").addEventListener("click", () => {
+  if (idleActive) hideIdleOverlay();
+});
+
+// Update countdown every second
+setInterval(() => {
+  const timeLeft = idleDuration - (Date.now() - lastActive);
+  if (timeLeft <= 0 && !idleActive) {
+    showIdleOverlay();
+    countdownEl.textContent = "Idle timer: 00:00";
+  } else if (!idleActive) {
+    const minutes = Math.floor(timeLeft / 60000);
+    const seconds = Math.floor((timeLeft % 60000) / 1000);
+    countdownEl.textContent = `Idle timer: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+}, 1000);
+</script>
+
+  <script>
+function toggleMusicPlayer() {
+  const player = document.getElementById("musicPlayer");
+  const audio = document.getElementById("bgAudio");
+  const musicBtn = document.querySelector(".fa-music").parentElement;
+
+  if (player.style.display === "none") {
+    player.style.display = "block";
+    audio.play();
+    musicBtn.classList.add("active");
+  } else {
+    player.style.display = "none";
+    audio.pause();
+    musicBtn.classList.remove("active");
+  }
+}
+// Hi? why are you reading this? eh this is a watermark for macbooksuck so ok bye!
+document.getElementById("musicToggle").addEventListener("click", function(e) {
+  e.preventDefault();
+  toggleMusicPlayer();
+});
+  </script>
+    
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-logo">
+                <div class="logo-icon">
+                    <span>CG</span>
+                </div>
+                <div class="logo-text">
+                    <div>macbook</div>
+                    <div>suck</div>
+                </div>
+            </div>
+
+            <div class="header-search">
+                <input type="text" placeholder="Search Bar!" class="search-input">
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-content">
+                    <div class="welcome-section">
+                        <h2>Welcome to macbooksuck</h2>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <span class="feature-dot blue"></span>
+                                125+ games
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-dot green"></span>
+                                No install needed
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-dot orange"></span>
+                                On any device
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-dot purple"></span>
+                                Play with friends
+                            </div>
+                        </div>
+                    </div>
+
+                    <nav class="sidebar-nav">
+                        <div class="sidebar-item active">
+                            <span class="nav-icon">🏠</span>
+                            Home
+                        </div>
+                        <div class="sidebar-item">
+                            <div class="coming-soon-label">🔥Coming soon!</div>
+                            
+                            <div class="icon-bar">
+                                <a href="https://discord.com/invite/bUhB26NxNC" target="_blank" title="Join our Discord">
+                                    <i class="fab fa-discord"></i>
+                                </a>
+                                <a href="#" onclick="toggleMusicPlayer()" title="Toggle Music">
+                                    <i class="fas fa-music"></i>
+                                </a>
+                            </div>
+                          </div>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <section class="games-section">
+                    <h2 class="section-title">Games <strong>If the game gives Unityweb error just refresh a bunch of times</strong></h2>
+                    <div class="games-grid">
+                        <a href="https://macbooksuck.xyz/games/proxy/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Proxy</div>
+                                <div class="game-subtitle">Click enter portal</div>
+                            </div>
+                            <div class="badge hot">Hot</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/bit-planes/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">bitplanes</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge new">New</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/DOOM/doom.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">DOOM</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/ElectronOS/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">ElectronOS Emulator</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge hot">Hot</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/10-minutes-till-dawn/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">10 Minutes Till Dawn</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                         </a>
+
+                        <a href="https://macbooksuper.xyz.xyz/games/99balls/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">99 Balls</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge new">New</div>
+                          </a>
+
+                        <a href="https://macbooksuck.xyz/games/bit-planes/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">100 Player Pong</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge hot">Hot</div>
+                          </a>
+
+                        <a href="https://macbooksuck.xyz/games/2048/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">2048</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge top-rated">Top rated</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/achievementunlocked/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Achievement Unlocked</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/adarkroom/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">A Dark Room</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/ages-of-conflict/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Ages Of Conflict</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/amazing-rope-police/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Amazing Rope Police</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge top-rated">Top rated</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/arcadewizard/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Arcade Wizard</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+                    
+                        <a href="https://macbooksuck.xyz/games/avalanche/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Avalanche</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/awesometanks2/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Awesome Tanks 2</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge updated">Developer rated</div>
+                        </a>
+
+
+                        <a href="https://macbooksuck.xyz/games/backrooms-2d/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Backrooms</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+
+                        <a href="https://macbooksuck.xyz/games/baldis-basics/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Baldis Basics</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/baldisbasicsfieldtripcampingremake/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Baldis Basics Camping</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/basket-random/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Basket Random</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge updated">Developer rated</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/bitlife/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Bitlife</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/boxing-random/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Boxing Random</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge updated">Developer rated</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/burger-and-frights/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Burger And Frights</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge top-rated">Top rated</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/charrio-kart/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Charrio Kart</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/cheesypuffclicker/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Cheesy Puff Clicker</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/chrome-dino/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Chrome Dino</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge hot">Hot</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/circlo/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Circlo</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+                        
+                        <a href="https://city-car-driving-stunt-master.macbooksuck.xyz/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">City Car Stunt Master</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge updated">Developer rated</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/cluster/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Cluster</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge updated">Developer rated</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/connect3/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Connect 3</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/cookie-clicker/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Cookie Clicker</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/core-ball/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Core Ball</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/crossyroad/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">CrossyRoad</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge top-rated">Top rated</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/csgo-clicker/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">CS:GO Clicker</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+                        
+                        <a href="https://macbooksuck.xyz/games/ctr/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Cut the Rope</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/ctr-holiday/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Cut the Rope Holiday</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/ctr-tr/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Cut the Rope Time Travel</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/cubefield/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Cubefield</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+                  
+                        <a href="https://macbooksuper.xyz/games/dante/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Dante</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/deathcario/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Death Car IO</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/deepest-sword/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Deepest Sword</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                            <div class="badge hot">Hot</div>
+                        </a>
+
+                        <a href="https://macbooksuck.xyz/games/death-run-3d/index.html" class="game-card">
+                            <div class="card-background blue-purple"></div>
+                            <div class="card-content">
+                                <div class="game-title">Death Run 3D</div>
+                                <div class="game-subtitle">Click to play</div>
+                            </div>
+                        </a>
+                        
+                </section>
+
+                <section class="games-section">
+                    <h2 class="section-title">Emulators/Others</h2>
+                    <div class="games-grid featured">
+                        <div class="game-card">
+                            <div class="card-background green-blue"></div>
+                            <div class="card-content">
+                                <div class="game-title">Discord</div>
+                            </div>
+                        </div>
+
+                        <div class="game-card">
+                            <div class="card-background green-blue"></div>
+                            <div class="card-content">
+                                <div class="game-title">Fullscreen Script</div>
+                                <div class="game-subtitle">Popular choice</div>
+                            </div>
+                        </div>
+
+                        <div class="game-card">
+                            <div class="card-background green-blue"></div>
+                            <div class="card-content">
+                                <div class="game-title">Tab Title Script</div>
+                            </div>
+                        </div>
+
+                        <div class="game-card">
+                            <div class="card-background green-blue"></div>
+                            <div class="card-content">
+                                <div class="game-title">Featured 4</div>
+                                <div class="game-subtitle">Popular choice</div>
+                            </div>
+                        </div>
+
+                        <div class="game-card">
+                            <div class="card-background green-blue"></div>
+                            <div class="card-content">
+                                <div class="game-title">Featured 5</div>
+                                <div class="game-subtitle">Popular choice</div>
+                            </div>
+                        </div>
+
+                        <div class="game-card">
+                            <div class="card-background green-blue"></div>
+                            <div class="card-content">
+                                <div class="game-title">Featured 6</div>
+                                <div class="game-subtitle">Popular choice</div>
+                            </div>
+                        </div>
+
+                        <div class="game-card">
+                            <div class="card-background green-blue"></div>
+                            <div class="card-content">
+                                <div class="game-title">Featured 7</div>
+                                <div class="game-subtitle">Popular choice</div>
+                            </div>
+                        </div>
+
+                        <div class="game-card">
+                            <div class="card-background green-blue"></div>
+                            <div class="card-content">
+                                <div class="game-title">Featured 8</div>
+                                <div class="game-subtitle">Popular choice</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script>
+document.querySelector('.search-input').addEventListener('input', function(e) {
+    const query = e.target.value.toLowerCase();
+    document.querySelectorAll('.game-card').forEach(card => {
+        const title = card.querySelector('.game-title')?.textContent.toLowerCase() || '';
+        card.style.display = title.includes(query) ? 'block' : 'none';
+    });
+});
+</script>
+</body>
+</html>
