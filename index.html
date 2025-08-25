@@ -1018,6 +1018,15 @@ document.getElementById("musicToggle").addEventListener("click", function(e) {
         </div>
     </div>
     <script>
+    document.querySelectorAll('.game-button').forEach(btn => {
+  const bg = btn.dataset.bg;
+  if (bg) {
+    btn.style.setProperty('--bg-url', `url(${bg})`);
+    btn.style.backgroundImage = `url(${bg})`;
+  }
+});
+    </script>
+    <script>
         document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".game-card[data-game-url]").forEach(card => {
     card.addEventListener("mouseenter", () => {
