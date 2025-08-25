@@ -302,6 +302,9 @@ body {
   transform: scale(1.2);
 }
 
+.game-card:hover .card-background.has-image {
+  transform: scale(1);
+}
 
 .card-background.blue-purple {
     background: linear-gradient(135deg, #3b82f6, #8b5cf6);
