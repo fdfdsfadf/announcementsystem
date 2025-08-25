@@ -376,6 +376,37 @@ body {
   transition: transform 0.2s;
 }
 
+.game-button {
+  position: relative;
+  width: 200px;
+  height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 4px black;
+  background-color: #000; /* fallback */
+}
+
+.game-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px) brightness(0.6);
+  z-index: 0;
+}
+
+.game-button .game-label {
+  position: relative;
+  z-index: 1;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
