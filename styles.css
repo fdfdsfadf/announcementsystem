@@ -355,6 +355,10 @@ body {
     background-color: var(--cg-yellow);
 }
 
+.badge.not-working {
+    background-color: var(--cg-red);
+}
+
 .game-card > .badge {
   position: absolute;
   top: 8px;
