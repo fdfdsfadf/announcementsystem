@@ -293,6 +293,14 @@ body {
     opacity: 0.2;
 }
 
+.card-background.has-image {
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px) brightness(0.6);
+  opacity: 1;
+}
+
+
 .card-background.blue-purple {
     background: linear-gradient(135deg, #3b82f6, #8b5cf6);
 }
