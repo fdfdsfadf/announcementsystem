@@ -297,8 +297,9 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: blur(8px) brightness(0.6);
   opacity: 1;
+  transition: transform 0.4s ease;
+  transform: scale(1.2);
 }
 
 
