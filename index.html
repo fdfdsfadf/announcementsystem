@@ -94,20 +94,27 @@
 }
 
 
-#ad-container {
-  width: 160px;
-  height: 100vh;
-  overflow: hidden;
-  z-index: 999;
-  background: #000;
-}
 
 #main-wrapper {
   display: flex;
+  align-items: flex-start;
+  gap: 0; /* ensures no spacing between grid and ad */
 }
 
 #game-grid {
   flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+#ad-container {
+  width: 160px;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+  z-index: 999;
+  margin-left: 0; /* just in case */
 }
 
 
@@ -1140,7 +1147,7 @@ document.querySelector('.search-input').addEventListener('input', function(e) {
   <!-- AD STUFF -->
     
 <div id="ad-container">
-<div style="position: absolute; z-index: 99999">
+    <div style="position: absolute; z-index: 99999">
       <input autocomplete="off" type="checkbox" id="aadsstickymescwwpx" hidden />
       <div style="padding-top: 0; padding-bottom: 0;">
         <div style="width:160px;height:100%;position:fixed;text-align:center;font-size:0;top:50%;transform:translateY(-50%);right:0;min-width:100px">
