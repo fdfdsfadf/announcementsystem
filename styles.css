@@ -258,7 +258,7 @@ body {
 
 @media (min-width: 1280px) {
     .games-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -268,7 +268,7 @@ body {
 
 @media (min-width: 1024px) {
     .games-grid.featured {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
