@@ -93,6 +93,28 @@
   animation: pulseGlow 1s infinite alternate;
 }
 
+
+#ad-container {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 160px; /* or whatever the ad width is */
+  height: 100vh;
+  overflow: hidden;
+  z-index: 999;
+  background: #000; /* optional backdrop */
+}
+
+#main-wrapper {
+  display: flex;
+}
+
+#game-grid {
+  flex: 1;
+  margin-right: 160px;
+}
+
+
         
 #webAppPopup {
   position: fixed !important;
@@ -1120,7 +1142,7 @@ document.querySelector('.search-input').addEventListener('input', function(e) {
     
   <!-- AD STUFF -->
 
-
+<div id="ad-container">
 <div style="position: absolute; z-index: 99999">
       <input autocomplete="off" type="checkbox" id="aadsstickymescwwpx" hidden />
       <div style="padding-top: 0; padding-bottom: 0;">
