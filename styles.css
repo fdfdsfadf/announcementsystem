@@ -240,7 +240,7 @@ body {
 /* Games Grid */
 .games-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1rem;
 }
 
@@ -258,7 +258,7 @@ body {
 
 @media (min-width: 1280px) {
     .games-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 }
 
@@ -268,7 +268,7 @@ body {
 
 @media (min-width: 1024px) {
     .games-grid.featured {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 }
 
@@ -488,22 +488,3 @@ body {
     font-weight: bold;
     color: white;
 }
-
-#main-wrapper {
-  display: flex;
-  align-items: flex-start;
-}
-
-.main-content {
-  flex: 1;
-}
-
-#ad-container {
-  width: 160px;
-  height: 100vh;
-  background: #000;
-  overflow: hidden;
-  z-index: 999;
-  margin-left: 0;
-}
-
