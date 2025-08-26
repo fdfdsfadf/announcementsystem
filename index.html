@@ -67,6 +67,13 @@
   padding-top: 4px;
 }
         
+.icon-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
 
 #idleCountdown {
   position: fixed;
@@ -115,7 +122,7 @@
 <body>
         <div class="icon-bar">
 <a href="https://discord.com/invite/bUhB26NxNC" target="_blank" title="Join our Discord">
-  <img src="assets/img/discord.png" alt="Discord" class="nav-icon-img">
+  <img src="assets/img/discord.png" alt="Discord" class="icon-img">
 </a>
 
   <a href="#" id="musicToggle" title="Play music">
@@ -308,7 +315,7 @@ document.getElementById("musicToggle").addEventListener("click", function(e) {
 
                         <div class="icon-bar">
                             <a href="https://discord.com/invite/bUhB26NxNC" target="_blank" title="Join our Discord">
-                                <img src="assets/img/discord.png" alt="Discord" class="nav-icon-img">
+                                <img src="assets/img/discord.png" alt="Discord" class="icon-img">
                             </a>
                             <a href="#" onclick="toggleMusicPlayer()" title="Toggle Music">
                                 <i class="fas fa-music"></i>
