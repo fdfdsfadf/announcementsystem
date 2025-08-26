@@ -489,3 +489,21 @@ body {
     color: white;
 }
 
+#main-wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.main-content {
+  flex: 1;
+}
+
+#ad-container {
+  width: 160px;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+  z-index: 999;
+  margin-left: 0;
+}
+
