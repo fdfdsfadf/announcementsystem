@@ -147,6 +147,11 @@ body {
     min-height: calc(100vh - 73px);
 }
 
+.sidebar-nav a.sidebar-item {
+    text-decoration: none;
+    color: inherit;
+}
+
 .sidebar-content {
     padding: 1rem;
 }
