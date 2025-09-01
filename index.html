@@ -1514,5 +1514,32 @@ document.querySelector('.search-input').addEventListener('input', function(e) {
     });
 });
 </script>
+<script>
+function toggleSettings() {
+  const dropdown = document.getElementById('settingsDropdown');
+  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+function applySettings() {
+  const newTitle = document.getElementById('titleInput').value;
+  const newFavicon = document.getElementById('faviconInput').value;
+
+  if (newTitle) {
+    document.title = newTitle;
+  }
+
+  if (newFavicon) {
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+    link.href = newFavicon;
+  }
+
+  toggleSettings(); // hide dropdown after applying
+}
+</script>
 </body>
 </html>
