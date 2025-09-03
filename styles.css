@@ -652,3 +652,95 @@ body {
 .motd.is-closing .motd__inner {
   animation: motd-collapse var(--motd-anim-out) forwards;
 }
+
+@keyframes motd-expand {
+  0%   { transform: scaleX(0.05); opacity: 0; filter: saturate(0.8); }
+  60%  { transform: scaleX(1.02); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 1; filter: none; }
+}
+@keyframes motd-collapse {
+  0%   { transform: scaleX(1); opacity: 1; }
+  40%  { transform: scaleX(1.02); }
+  100% { transform: scaleX(0.05); opacity: 0; }
+}
+
+.motd__label {
+  font-weight: 900;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #000;
+  border: 1px solid var(--motd-border);
+  color: var(--motd-text);
+  text-shadow: 0 0 10px #003cff, 0 0 20px #0066ff, 0 0 30px #0064e6;
+}
+
+.motd__text {
+  font-size: 14px;
+  color: var(--motd-text);
+  min-height: 1.2em;     /* avoid layout shift while typing */
+  white-space: nowrap;   /* classic ticker feel; remove if you want wrapping */
+  overflow: hidden;
+  border-right: 0.12em solid transparent; /* caret slot, toggled via JS */
+}
+
+/* Caret blinks only while typing (JS toggles .is-typing) */
+.motd__text.is-typing {
+  border-right-color: var(--motd-accent);
+  animation: caret-blink 900ms steps(1, end) infinite;
+}
+@keyframes caret-blink {
+  50% { border-right-color: transparent; }
+}
+
+.motd__close {
+  appearance: none;
+  background: #000;
+  color: var(--motd-text);
+  border: 1px solid var(--motd-border);
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .25s ease, color .4s ease, border-color .25s ease;
+}
+.motd__close:hover {
+  color: var(--motd-accent);
+  border-color: var(--motd-accent);
+  box-shadow: 0 0 10px var(--motd-accent), 0 0 20px #37ff00, 0 0 30px #0ce600, 0 0 40px #11ee01;
+  transform: translateY(-1px) scale(1.05);
+}
+
+/* Toast position above footer & music widget (optional variant) */
+.motd--toast {
+  position: fixed;
+  bottom: 90px;     /* clears your footer + music widget */
+  right: 16px;
+  margin: 0;
+  z-index: 10001;   /* above music(10000) */
+  width: min(420px, 92vw);
+}
+.motd--toast .motd__inner {
+  grid-template-columns: 1fr auto auto;
+}
+
+/* Respect accessibility preferences */
+@media (prefers-reduced-motion: reduce) {
+  .motd__inner,
+  .motd.is-open .motd__inner,
+  .motd.is-closing .motd__inner {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .motd__text,
+  .motd__text.is-typing {
+    animation: none !important;
+    border-right-color: transparent !important;
+  }
+}
+
+/* When closing by JS */
+.motd.is-closing .motd__inner {
+  animation: motd-collapse var(--motd-anim-out) forwards;
+}
