@@ -275,6 +275,20 @@ document.getElementById("musicToggle").addEventListener("click", function(e) {
   </div>
 </div>
 
+
+  <!-- MOTD (Message of the Day) -->
+  <div class="motd" id="motd" data-version="2025-09-02" aria-live="polite">
+    <div class="motd__inner" role="status" aria-atomic="true">
+      <span class="motd__label">MOTD</span>
+      <span
+        class="motd__text"
+        id="motdText"
+        data-text="Sorry for the downtime on friday, i had to buy a server for 40 bucks. Please donate to the kofi 💔. Also freebird is up"
+        aria-label="ts is pointless"
+      ></span>
+      <button class="motd__close" id="motdClose" aria-label="Dismiss message" title="Dismiss">✕</button>
+    </div>
+  </div>
     
     <div class="app">
         <!-- Header -->
