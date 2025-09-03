@@ -24,6 +24,12 @@ body {
     --cg-purple: #a855f7;
     --cg-yellow: #FFD700;
     --border-color: #2d3748;
+    --motd-bg: #000436;
+    --motd-border: #4400ff;
+    --motd-text: #d400ff;
+    --motd-accent: #1eff00;
+    --motd-anim-in: 420ms cubic-bezier(.2,.8,.2,1);
+    --motd-anim-out: 320ms cubic-bezier(.4,0,.2,1);
 }
 
 /* Custom Scrollbar */
@@ -612,3 +618,38 @@ body {
   background-color: #00c2cc;
 }
 
+
+.motd {
+  width: min(1000px, 92vw);
+  margin: 10px auto 12px;
+  position: relative;
+  z-index: 9998; /* header(9999), music(10000) */
+}
+
+.motd__inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--motd-bg);
+  border: 1px solid var(--motd-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.45);
+
+  /* spawn/close base state */
+  transform: scaleX(0);
+  transform-origin: 50% 50%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* When opened by JS */
+.motd.is-open .motd__inner {
+  animation: motd-expand var(--motd-anim-in) forwards;
+}
+
+/* When closing by JS */
+.motd.is-closing .motd__inner {
+  animation: motd-collapse var(--motd-anim-out) forwards;
+}
